@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3295743863065866651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7266865619586434420}
+  - component: {fileID: 5055766855030975068}
+  m_Layer: 0
+  m_Name: DataConfigs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7266865619586434420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295743863065866651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.82487, y: 5.96481, z: 878.64233}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5055766855030975068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295743863065866651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c5218fe927b1141bd8d5a64e6fd09c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DataConfigs
+  _dontDestryOnLoad: 1
+  _overrideInstance: 0
+  colorConfigs:
+  - Color: 1
+    material: {fileID: 2100000, guid: 49c39841fa8ed644f8223da0ca800f6e, type: 2}
+    blockedMat: {fileID: 2100000, guid: 00f89e2864226324c8883193ce71d228, type: 2}
+  - Color: 2
+    material: {fileID: 2100000, guid: 6d2b31137f3b58146aec858f35fd5fca, type: 2}
+    blockedMat: {fileID: 2100000, guid: 82bc857d2e5481147a3dfcb0f8d3bbb5, type: 2}
+  - Color: 3
+    material: {fileID: 2100000, guid: def51884b1c9a294bbf6e2848db95847, type: 2}
+    blockedMat: {fileID: 2100000, guid: 1c0f2b287ecdedb4b8f0cf1063c0977a, type: 2}
+  - Color: 4
+    material: {fileID: 2100000, guid: 0b2dc0281f3a0b942adff187bc7671fb, type: 2}
+    blockedMat: {fileID: 2100000, guid: cab2da096ad91544fbdb8d1fbbb05c6f, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 55014376c1256704d9c4d13256db4db2, type: 2}
