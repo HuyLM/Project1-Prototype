@@ -35,7 +35,7 @@ public class Unloader : MonoBehaviour
 
         for (int i = 0; i < blocks.Count; i++)
         {
-            blocks[i].transform.localPosition = CalculatePositionForIndex(i);
+            blocks[i].MoveToPos(CalculatePositionForIndex(i));
         }
     }
 
@@ -48,7 +48,7 @@ public class Unloader : MonoBehaviour
         blocks.Add(block);
         block.UnblockNeighbours();
         block.transform.parent = queue;
-        block.transform.DOLocalMove(CalculatePositionForIndex(blocks.Count - 1), 0.25f);
+        UpdateVisual();
     }
 
     public void RemoveBlock(MovingSlot movingSlot)

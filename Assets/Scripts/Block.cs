@@ -84,6 +84,13 @@ public class Block : MonoBehaviour
         Number = UnityEngine.Random.Range(1, 7);
         UpdateColor();
     }
+    Tween moving;
+
+    public void MoveToPos(Vector3 target)
+    {
+        moving?.Kill();
+        moving = transform.DOLocalMove(target, 0.25f).SetEase(Ease.OutQuad);
+    }
 }
 
 public enum GameColor

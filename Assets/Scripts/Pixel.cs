@@ -20,6 +20,7 @@ public class Pixel : MonoBehaviour
         IsDrawed = false;
         Color = color;
         UpdateColor();
+        dotRenderer.gameObject.SetActive(false);
     }
 
 
@@ -65,5 +66,10 @@ public class Pixel : MonoBehaviour
     public void MoveUp(float upValue)
     {
         transform.DOMoveY(transform.position.y + upValue, 0.15f);
+    }
+
+    public void ShowDot()
+    {
+        dotRenderer.gameObject.SetActive(true);
     }
 }

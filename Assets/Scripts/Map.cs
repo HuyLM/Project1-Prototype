@@ -17,32 +17,44 @@ public class Map : MonoBehaviour
     {
         MapData = new MapData();
         MapData.CreateMap();
+        SpawnMap();
         SpawnNewRow();
+    }
+
+    private void SpawnMap()
+    {
+        float enemySpacing = 0.35f;
+        for (int r = 0; r < MapData.Row; r++)
+        {
+            for (int c = 0; c < MapData.Col; c++)
+            {
+                float startX = -((MapData.Col - 1) * enemySpacing) / 2;
+                float startY = +((MapData.Row - 1) * enemySpacing) / 2;
+
+                Vector3 spawnPos = new Vector3(
+                startX + c * enemySpacing,
+                startY - r * enemySpacing,
+               0
+             );
+
+                var enemyObj = GameObject.Instantiate(pixelPrefab, transform);
+                enemyObj.transform.localPosition = spawnPos;
+                enemyObj.transform.rotation = Quaternion.identity;
+                enemyObj.transform.localScale = new Vector3(enemySpacing, 0.35f, enemySpacing);
+                enemyObj.Initialize(MapData.Pixels[r, c].Color);
+                enemyObj.OnFilled = OnFilled;
+                pixels.Add(enemyObj);
+            }
+        }
     }
 
     private void SpawnNewRow()
     {
         needFillPixels.Clear();
-        float enemySpacing = 0.35f;
-        for (int c = 0; c < MapData.Col; c++)
+        for(int i = 0; i < MapData.Col; ++i)
         {
-            float startX = -((MapData.Col - 1) * enemySpacing) / 2;
-
-            Vector3 spawnPos = new Vector3(
-                 startX + c * enemySpacing,
-                 0,
-                0
-              );
-
-
-            var enemyObj = GameObject.Instantiate(pixelPrefab, transform);
-            enemyObj.transform.localPosition = spawnPos;
-            enemyObj.transform.rotation = Quaternion.identity;
-            enemyObj.transform.localScale = new Vector3(enemySpacing, 0.35f, enemySpacing);
-            enemyObj.Initialize(MapData.Pixels[curRow, c].Color);
-            enemyObj.OnFilled = OnFilled;
-            needFillPixels.Add(enemyObj);
-            pixels.Add(enemyObj);
+            needFillPixels.Add(pixels[curRow * MapData.Col + i]);
+            needFillPixels[i].ShowDot();
         }
 
         conveyor.LinkSegments();
@@ -50,6 +62,17 @@ public class Map : MonoBehaviour
     bool movingUp = false;
     private void OnFilled()
     {
+        foreach (var p in needFillPixels)
+        {
+            if (p.IsDrawed == false)
+            {
+                return;
+            }
+        }
+
+        curRow++;
+        SpawnNewRow();
+        return;
         if(movingUp == true)
         {
             return;
