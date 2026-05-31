@@ -1,31 +1,23 @@
+using Dreamteck.Splines;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ConveyorSegment : MonoBehaviour
 {
-    public List<Pixel> Pixels;
-    public Unloader Unloader;
+    public CakeLand[] Containers;
+    public Unloader Unloader; 
+    public SplineComputer spline;
 
-    public List<Pixel> GetContainer(GameColor color, int number)
+    public CakeLand GetContainer(GameColor color)
     {
-        if(number <= 0)
+        for (int i = 0; i < Containers.Length; i++)
         {
-            return null;
-        }
-        List<Pixel> pixels = new List<Pixel>();
-        for(int i = 0; i < Pixels.Count; i++)
-        {
-            if(Pixels[i].IsDrawed == false && Pixels[i].Color == color)
+            if (Containers[i].IsBlocked == false && Containers[i].Color == color && Containers[i].IsFull == false)
             {
-                pixels.Add(Pixels[i]);
-                number--;
-                if(number == 0)
-                {
-                    return pixels;
-                }
+                return Containers[i];
             }
         }
-        return pixels;
+        return null;
     }
 
    

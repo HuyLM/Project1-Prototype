@@ -57,7 +57,7 @@ public class Map : MonoBehaviour
             needFillPixels[i].ShowDot();
         }
 
-        conveyor.LinkSegments();
+       // conveyor.LinkSegments();
     }
     bool movingUp = false;
     private void OnFilled()

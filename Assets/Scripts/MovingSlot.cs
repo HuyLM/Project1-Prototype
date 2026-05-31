@@ -6,13 +6,14 @@ public class MovingSlot : MonoBehaviour
 {
     public SplineFollower Follower;
     public float Speed = 1f;
+    public Transform Container;
 
     [System.Serializable]
     public class SlotPassEvent : UnityEvent<MovingSlot, int> { }
 
     public SlotPassEvent OnPassSlot;
 
-    public Block Block;
+    public Piece Block;
 
     private double[] _slotPercents;
     private double _prevPercent;
@@ -72,13 +73,12 @@ public class MovingSlot : MonoBehaviour
         Unloader.ontextupdate.Invoke();
     }
 
-    public void AddBlock(Block block)
+    public void AddBlock(Piece block)
     {
         Block = block;
-        block.transform.SetParent(transform, false);
+        block.transform.SetParent(Container, false);
         block.transform.localPosition = Vector3.zero;
         block.transform.localRotation = Quaternion.identity;
-        Debug.LogError("AddBlock");
         Unloader.ontextupdate.Invoke();
     }
 

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Dreamteck.Splines;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public class Unloader : MonoBehaviour
 
     public int MaxQueueSize;
 
-    public List<Block> blocks = new();
+    public List<Piece> blocks = new();
 
     public static Action ontextupdate;
 
@@ -26,7 +27,7 @@ public class Unloader : MonoBehaviour
 
     public void UpdateText()
     {
-        text.text = $"{blocks.Count + Conveyor.FilledMovingSlotCount()}/{MaxQueueSize}";
+        text.text = $"{blocks.Count + Conveyor.FilledMovingSlotCount()}/{Conveyor.Segments.Length}";
     }
     
     private void UpdateVisual()
@@ -39,16 +40,17 @@ public class Unloader : MonoBehaviour
         }
     }
 
-    public void AddBlock(Block block)
+    public bool AddBlock(Piece block)
     {
-        if(blocks.Count + Conveyor.FilledMovingSlotCount() >= MaxQueueSize)
+        if(blocks.Count + Conveyor.FilledMovingSlotCount() >= Conveyor.Segments.Length)
         {
-            return;
+            return false;
         }
         blocks.Add(block);
-        block.UnblockNeighbours();
         block.transform.parent = queue;
+        block.transform.DOLocalRotateQuaternion(Quaternion.identity, 0.25f);
         UpdateVisual();
+        return true;
     }
 
     public void RemoveBlock(MovingSlot movingSlot)
@@ -66,16 +68,5 @@ public class Unloader : MonoBehaviour
     private Vector3 CalculatePositionForIndex(int index)
     {
         return new Vector3(0 , 0, -1 * distance * index);
-    }
-
-    [SerializeField] private Block[] addBlock;
-
-    [Button]
-    private void TestAdd()
-    {
-        for(int i = 0; i < addBlock.Length; i++) {
-            AddBlock(addBlock[i]);
-
-        }
     }
 }

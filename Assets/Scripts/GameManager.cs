@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -128,9 +129,10 @@ public class GameManager : MonoBehaviour
         {
             if (hit.collider.CompareTag("Block"))
             {
-                Block block = hit.collider.GetComponent<Block>();
-                if (block != null)
+                SelectPieceHitbox hitbox = hit.collider.GetComponent<SelectPieceHitbox>();
+                if (hitbox != null)
                 {
+                    var block = hitbox.Piece;
                     if (block.IsBlocked)
                     {
                         return;
@@ -148,9 +150,25 @@ public class GameManager : MonoBehaviour
                         //GameLog.Log($"[LevelController] Click ignored - cooldown ({clickCooldownDuration:F2}s). Time remaining: {clickCooldownDuration - timeSinceLastClick:F2}s");
                         return;
                     }
-                    unloader.AddBlock(block);
+                    var cake = block.Slot.CakeLand;
+                    var pieces = cake.GetPieces(block);
+                    StartCoroutine(Ijump(pieces));
                 }
             }
+        }
+    }
+
+    private IEnumerator Ijump(List<Piece> pieces)
+    {
+        foreach(var  piece in pieces)
+        {
+            bool canAdd = unloader.AddBlock(piece);
+            if(canAdd == false)
+            {
+                yield break;
+            }
+            piece.MakeEmptySlot();
+            yield return new WaitForSeconds(0.25f);
         }
     }
 

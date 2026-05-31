@@ -18,13 +18,15 @@ public class Conveyor : MonoBehaviour
 
     private void Start()
     {
-        SpawnMovingSlots();
+        StartCoroutine(SpawnMovingSlots());
     }
 
-    public void SpawnMovingSlots()
+    public IEnumerator SpawnMovingSlots()
     {
         int count = Segments.Length;
-        if (count == 0) return;
+        if (count == 0) yield break;
+        LoadLine();
+        yield return null;
 
         float totalLength = splineComputer.CalculateLength();
         float spacing = totalLength / count;
@@ -36,6 +38,8 @@ public class Conveyor : MonoBehaviour
             SplineSample sample = splineComputer.Project(Segments[i].transform.position);
             _slotPercents[i] = sample.percent;
         }
+
+        List<double> percents = new();
 
         for (int i = 0; i < count; i++)
         {
@@ -50,14 +54,46 @@ public class Conveyor : MonoBehaviour
             movingSlot.OnPassSlot.AddListener(OnPassSegmentTrigger);
 
             _slots.Add(movingSlot);
-
-            StartCoroutine(InitFollower(movingSlot.Follower, percent));
+            percents.Add(percent);
+        }
+        yield return null;
+        for (int i = 0; i < count; i++)
+        {
+            InitFollower(_slots[i].Follower, percents[i]);
         }
     }
 
-    IEnumerator InitFollower(SplineFollower follower, double percent)
+    private void LoadLine()
     {
-        yield return null; // ⏳ đợi 1 frame để Awake() + Start() chạy xong
+        List<SplineComputer> SourceSplines = new List<SplineComputer>();
+
+        for (int i = 0; i < Segments.Length; i++)
+        {
+            SourceSplines.Add(Segments[i].spline);
+        }
+        List<SplinePoint> allPoints = new List<SplinePoint>();
+
+        for (int s = 0; s < SourceSplines.Count; s++)
+        {
+            SplinePoint[] points = SourceSplines[s].GetPoints();
+
+            // Bỏ điểm cuối của mỗi spline (trừ spline cuối)
+            // để tránh trùng điểm tại chỗ nối
+            int count = points.Length;
+
+            for (int i = 0; i < count; i++)
+                allPoints.Add(points[i]);
+        }
+
+
+        splineComputer.SetPoints(allPoints.ToArray());
+
+        // Đóng loop
+        splineComputer.Close();
+    }
+
+    void InitFollower(SplineFollower follower, double percent)
+    {
         follower.SetPercent(percent);
     }
 
@@ -74,25 +110,15 @@ public class Conveyor : MonoBehaviour
         }
         else
         {
-            Block block = movingSlot.Block;
+            Piece block = movingSlot.Block;
 
-            var container = segment.GetContainer(block.Color, movingSlot.Block.Number);
-            if (container == null || container.Count == 0)
+            var container = segment.GetContainer(block.Color);
+            if (container == null)
             {
                 return;
             }
-            block.RemoveNumber(container.Count);
-            if (block.Number <= 0)
-            {
-                movingSlot.MakeEmpty();
-            }
-
-            for (int i = 0; i < container.Count; i++)
-            {
-                container[i].Draw(movingSlot.transform, i * 0.1f);
-            }
-
-           
+            movingSlot.MakeEmpty();
+            block.JumpToContainer(container);
         }
     }
 
@@ -101,34 +127,34 @@ public class Conveyor : MonoBehaviour
         return _slots.Count(slot => slot.IsEmpty() == false);
     }
 
-    public void LinkSegments()
-    {
-        int Overlap = 1;
-        int m = map.needFillPixels.Count;
-        int n = TopSegments.Length;
-        if (m == 0 || n == 0) return;
+    //public void LinkSegments()
+    //{
+    //    int Overlap = 1;
+    //    int m = map.needFillPixels.Count;
+    //    int n = TopSegments.Length;
+    //    if (m == 0 || n == 0) return;
 
 
-        foreach (var seg in TopSegments)
-            seg.Pixels.Clear();
+    //    foreach (var seg in TopSegments)
+    //        seg.Pixels.Clear();
 
-        int startIndex = 0;
+    //    int startIndex = 0;
 
-        for (int i = 0; i < n; i++)
-        {
-            // Chia đều, phần dư được cộng vào các segment đầu
-            int count = m / n + (i < m % n ? 1 : 0);
+    //    for (int i = 0; i < n; i++)
+    //    {
+    //        // Chia đều, phần dư được cộng vào các segment đầu
+    //        int count = m / n + (i < m % n ? 1 : 0);
 
-            // Mở rộng biên trái (share với segment trước)
-            int from = Mathf.Max(0, startIndex - (i > 0 ? Overlap : 0));
+    //        // Mở rộng biên trái (share với segment trước)
+    //        int from = Mathf.Max(0, startIndex - (i > 0 ? Overlap : 0));
 
-            // Mở rộng biên phải (share với segment sau)
-            int to = Mathf.Min(m, startIndex + count + (i < n - 1 ? Overlap : 0));
+    //        // Mở rộng biên phải (share với segment sau)
+    //        int to = Mathf.Min(m, startIndex + count + (i < n - 1 ? Overlap : 0));
 
-            for (int j = from; j < to; j++)
-                TopSegments[i].Pixels.Add(map.needFillPixels[j]);
+    //        for (int j = from; j < to; j++)
+    //            TopSegments[i].Pixels.Add(map.needFillPixels[j]);
 
-            startIndex += count;
-        }
-    }
+    //        startIndex += count;
+    //    }
+    //}
 }

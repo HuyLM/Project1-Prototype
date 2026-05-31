@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587536499892411877}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 5983558831184766598}
   - {fileID: 1893592426510547173}
   m_Father: {fileID: 5591499095388984823}
-  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1126952676014039327
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,37 +306,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 3363066930369381116}
   m_maskType: 0
---- !u!1 &3481372795118013382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8609091657870422265}
-  m_Layer: 0
-  m_Name: Container
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8609091657870422265
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3481372795118013382}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0.25, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5591499095388984823}
-  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!1 &3915807913958902615
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +410,7 @@ GameObject:
   - component: {fileID: 8293295180993124937}
   - component: {fileID: 7772348979027873348}
   m_Layer: 0
-  m_Name: ConveyorSlotView
+  m_Name: ConveyorSlotView 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -461,7 +430,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8848776858507457192}
-  - {fileID: 8609091657870422265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6937658940796456135
@@ -525,9 +493,9 @@ MonoBehaviour:
   _physicsMode: 0
   _motion:
     _hasOffset: 0
-    _hasRotationOffset: 0
+    _hasRotationOffset: 1
     _offset: {x: 0, y: 0}
-    _rotationOffset: {x: 0, y: 0, z: 0}
+    _rotationOffset: {x: -90, y: -90, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
     velocityHandleMode: 0
@@ -541,7 +509,7 @@ MonoBehaviour:
     applyRotationY: 1
     applyRotationZ: 1
     applyRotation2D: 1
-    retainLocalRotation: 0
+    retainLocalRotation: 1
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0
@@ -588,10 +556,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MovingSlot
   Follower: {fileID: 6937658940796456135}
   Speed: 2
-  Container: {fileID: 8609091657870422265}
   OnPassSlot:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7772348979027873348}
+        m_TargetAssemblyTypeName: SplineSement, Assembly-CSharp
+        m_MethodName: ato
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   Block: {fileID: 0}
 --- !u!114 &7772348979027873348
 MonoBehaviour:
